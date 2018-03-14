@@ -42,7 +42,7 @@ public class BitfinexRestClientTest {
 
     @Test
     public void shouldReturnListOfSymbolDetails() {
-        // give
+        // given
         List<SymbolDetail> mockedSymbolDetails = ImmutableList.of(new SymbolDetail());
         when(responseEntityMock.getBody()).thenReturn(mockedSymbolDetails);
 
