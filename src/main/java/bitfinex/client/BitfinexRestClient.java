@@ -20,8 +20,8 @@ public class BitfinexRestClient {
     }
 
     /**
-     * Get symbol details (
-     * @return
+     * Get all symbol details using bitfinex rest api
+     * @return all symbol details
      */
     public List<SymbolDetail> getSymbolDetails() {
         ResponseEntity<List<SymbolDetail>> responseEntity = restTemplate.exchange(SYMBOL_DETAILS_URL, HttpMethod.GET, null,
