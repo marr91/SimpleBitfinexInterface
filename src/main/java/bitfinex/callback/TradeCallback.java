@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.function.Consumer;
 
-
+/**
+ * Callback to invoke on a new message from bitfinex
+ */
 public class TradeCallback implements Consumer<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TradeCallback.class);
