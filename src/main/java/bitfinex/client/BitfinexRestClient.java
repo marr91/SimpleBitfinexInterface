@@ -11,14 +11,18 @@ import java.util.List;
 
 public class BitfinexRestClient {
 
-    private final RestTemplate restTemplate;
-
     private static final String SYMBOL_DETAILS_URL = "https://api.bitfinex.com/v1/symbols_details";
 
-    public BitfinexRestClient() {
-        restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public BitfinexRestClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
+    /**
+     * Get symbol details (
+     * @return
+     */
     public List<SymbolDetail> getSymbolDetails() {
         ResponseEntity<List<SymbolDetail>> responseEntity = restTemplate.exchange(SYMBOL_DETAILS_URL, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<SymbolDetail>>() {

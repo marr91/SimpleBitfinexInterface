@@ -100,10 +100,10 @@ public class SymbolDetail {
      * @return SymbolDetail as string
      */
     public String toSimplifiedString() {
-        return pair + "," +
+        return "[" + pair + "," +
                 pricePrecision + "," +
                 minimumOrderSize + "," +
-                maximumOrderSize;
+                maximumOrderSize + "]";
     }
 
     @Override

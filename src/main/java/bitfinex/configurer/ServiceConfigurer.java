@@ -7,6 +7,7 @@ import bitfinex.client.BitfinexWsClient;
 import bitfinex.subscriber.BfxTradesSubscriber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
@@ -15,7 +16,7 @@ public class ServiceConfigurer {
     @Bean(destroyMethod = "close")
     public BitfinexWsClient bitfinexWsClient() {
         // TODO: should be extracted to config
-        String wsUri = "wss://api.bitfinex.com/ws/2";
+        String wsUri = "wss://api.bitfinex.com/ws/1";
 
         return new BitfinexWsClient(wsUri);
     }
@@ -32,6 +33,6 @@ public class ServiceConfigurer {
 
     @Bean
     public BitfinexRestClient bitfinexRestClient() {
-        return new BitfinexRestClient();
+        return new BitfinexRestClient(new RestTemplate());
     }
 }
