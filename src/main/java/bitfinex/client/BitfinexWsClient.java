@@ -9,6 +9,7 @@ import javax.websocket.*;
 import java.io.Closeable;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
 
@@ -23,9 +24,12 @@ public class BitfinexWsClient implements Closeable {
 
     private final List<Consumer<String>> callbacks;
 
+    private final CountDownLatch connectionReadyLatch;
+
     public BitfinexWsClient(String wsUri) {
         this.wsUri = wsUri;
         this.callbacks = Lists.newCopyOnWriteArrayList();
+        this.connectionReadyLatch = new CountDownLatch(1);
     }
 
     @OnMessage
@@ -44,6 +48,7 @@ public class BitfinexWsClient implements Closeable {
     @OnOpen
     public void onOpen(Session userSession) {
         LOGGER.info("Opened bitfinex ws session");
+        connectionReadyLatch.countDown();
     }
 
     @OnClose
@@ -91,14 +96,11 @@ public class BitfinexWsClient implements Closeable {
     /**
      * Connects to bitfinex
      */
-    public void connect() {
-        try {
-            URI bitfinexURI = new URI(wsUri); // TODO ; extract
-            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            userSession = container.connectToServer(this, bitfinexURI);
-        } catch (Exception ex) {
-            LOGGER.error("Connecting to '{}' caused exception: ", wsUri, ex);
-        }
+    public void connect() throws Exception {
+        URI bitfinexURI = new URI(wsUri);
+        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        userSession = container.connectToServer(this, bitfinexURI);
+        connectionReadyLatch.await();
     }
 
     /**
@@ -119,5 +121,9 @@ public class BitfinexWsClient implements Closeable {
 
     public boolean isConnected() {
         return userSession != null;
+    }
+
+    public String getWsUri() {
+        return wsUri;
     }
 }

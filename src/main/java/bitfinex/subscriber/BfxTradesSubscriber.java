@@ -34,7 +34,11 @@ public class BfxTradesSubscriber {
      */
     public void subscribeOnTradePair(String pair) {
         if (!bfxWsClient.isConnected()) {
-            bfxWsClient.connect();
+            try {
+                bfxWsClient.connect();
+            } catch (Exception ex) {
+                LOGGER.error("Connecting to '{}' caused exception: ", bfxWsClient.getWsUri(), ex);
+            }
         }
         bfxWsClient.addCallback(tradeCallback);
         bfxWsClient.sendMessage(String.format(SUBSCRIBE_TRADES_MSG_PATTERN, pair));
@@ -44,5 +48,6 @@ public class BfxTradesSubscriber {
 
     public void unsubscribe() {
         bfxWsClient.removeCallback(tradeCallback);
+        LOGGER.info("Unsubscribed on bitfinex trades");
     }
 }
