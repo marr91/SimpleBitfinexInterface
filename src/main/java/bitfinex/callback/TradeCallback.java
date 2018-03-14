@@ -9,14 +9,14 @@ import java.util.Date;
 import java.util.function.Consumer;
 
 /**
- * Callback to invoke on a new message from bitfinex
+ * Callback to invoke on a new message from bitfinex. Process only trade messages
  */
 public class TradeCallback implements Consumer<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TradeCallback.class);
 
     /**
-     * Invoke action for message from bfx
+     * Invoke action for trade message from bfx
      * @param message message with format:
      *      [ 5, 'te', '1234-BTCUSD', 1443659698, 236.42, 0.49064538 ]
      */
